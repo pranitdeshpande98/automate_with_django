@@ -1,6 +1,7 @@
 import csv
 from django.core.management.base import BaseCommand, CommandError
 from django.apps import apps
+from django.db import DataError
 
 ## The proposed custom command is python manage.py importdata filepath modelname
 class Command(BaseCommand):
@@ -25,9 +26,18 @@ class Command(BaseCommand):
 
         if not model:
             raise CommandError(f'Model "{modelname}" not found in any of the apps')
+        
+
+        
+        model_fields = [field.name for field in model._meta.fields if field.name != 'id']
 
         with open (filepath,'r') as file:
             reader = csv.DictReader(file)
+            csv_header = reader.fieldnames
+            ## Compare CSV header with model fieldnames
+
+            if csv_header != model_fields:
+                raise DataError(f"CSV file does not match with the given {modelname} table fields")
             for row in reader:
                 model.objects.create(**row)
         self.stdout.write(self.style.SUCCESS("Data Imported from CSV Successfully!"))
