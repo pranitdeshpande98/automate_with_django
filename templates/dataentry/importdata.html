@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +15,12 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+<script>
+setTimeout(function(){
+    $('#messages').fadeOut('slow')
+},5000)
 
+</script>
 </head>
 <body>
     <div class="container">
