@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.shortcuts import redirect, render
 from django.core.management import call_command
-from dataentry.utils import get_all_custom_models
+from dataentry.utils import check_csv_errors, get_all_custom_models
 from uploads.models import Upload
 from django.contrib import messages
 from . tasks import import_data_task
@@ -22,6 +22,14 @@ def import_data(request):
         base_url = str(settings.BASE_DIR).replace('\\', '/')
         file_path = base_url+relative_path
         
+
+        ## Check for csv errors
+        try:
+            check_csv_errors(file_path,model_name)
+        except Exception as e:
+            messages.error(request, str(e))
+            return redirect('import_data')
+
         ## Handle the import data task here
         import_data_task.delay(file_path,model_name)
 
