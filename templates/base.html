@@ -8,7 +8,11 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <style>
+        .form-group{
+          padding: 15px !important;
+        }
+      </style>
 <script>
 setTimeout(function(){
     $('#messages').fadeOut('slow')
@@ -17,6 +21,16 @@ setTimeout(function(){
 </script>
 </head>
 <body>
+    <!-- As a link -->
+<nav class="navbar navbar-light bg-light">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'home' %}">Automate with Django</a>
+      <div>
+        <a href="" class="float-right text-decoration-none text-dark">Login</a>
+        &nbsp;<a href="" class="float-right btn btn-success">Register</a>
+      </div>
+    </div>
+  </nav>
 
     {% block content %}
 
