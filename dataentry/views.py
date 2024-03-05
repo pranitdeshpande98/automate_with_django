@@ -43,3 +43,20 @@ def import_data(request):
         }
 
     return render(request,'dataentry/importdata.html',context=context)
+
+
+def export_data(request):
+    if request.method == 'POST':
+        model_name = request.POST.get('model_name')
+        try:
+            call_command('exportdata', model_name)
+        except Exception as e:
+            raise e
+        messages.success(request,'Your Data is Exported')
+        return redirect('export_data')
+    else:
+        custom_models = get_all_custom_models()
+        context = {
+            'custom_models': custom_models,
+        }
+    return render(request,'dataentry/exportdata.html', context=context)
