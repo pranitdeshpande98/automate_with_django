@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home, name='home'),
     path('dataentry/',include('dataentry.urls')),
+    path('emails/',include('emails.urls')),
     path('celery_test',views.celery_test),
     ## Registration and Login URL
     path('register/',views.register,name='register'),
