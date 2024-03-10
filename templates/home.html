@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container" style="padding: 50px;margin-top: 5%;">
     {% if user.is_authenticated %}
-    <h2 class="text-center">Automate The Boring Stuff With Django</h2>
+    <h2 class="text-center">Automate Tedious Stuff With Django</h2>
     <div class="row pt-5">
         <!-- Import data -->
         <div class="col-md-4">
@@ -64,7 +64,7 @@
         </div>
         <!-- Compress Images -->
         <div class="col-md-4">
-            <a href="#" class="text-decoration-none text-dark">
+            <a href="{% url 'compress' %}" class="text-decoration-none text-dark">
                 <div class="card alert-danger shadow">
                     <div class="card-header">
                     <h4>Compress Images</h4>
