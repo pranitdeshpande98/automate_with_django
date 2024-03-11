@@ -1,6 +1,6 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
-from emails.models import Subscriber
+from emails.models import Email, Subscriber
 from emails.tasks import send_email_task
 from . forms import EmailForm
 from django.contrib import messages
@@ -46,3 +46,17 @@ def track_click(request):
 
 def track_open(request):
     return
+
+def track_dashboard(request):
+    emails = Email.objects.all()
+    context ={
+        'emails': emails,
+    }
+    return render(request,'emails/track_dashboard.html', context)
+
+def track_stats(request, pk):
+    email = get_object_or_404(Email, pk=pk)
+    context ={
+        'email' : email,
+    }
+    return render(request, 'emails/track_stats.html', context)
