@@ -8,7 +8,10 @@ class List(models.Model):
     def __str__(self):
         return self.email_list
     
-
+    def count_emails(self):
+        count = Subscriber.objects.filter(email_list=self).count()
+        return count
+    
 class Subscriber(models.Model):
     email_list = models.ForeignKey(List,on_delete=models.CASCADE)
     email_address=models.EmailField(max_length=50)

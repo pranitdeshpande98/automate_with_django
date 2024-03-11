@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
-
-from emails.models import Email, Subscriber
+from django.db.models import Sum
+from emails.models import Email, Sent, Subscriber
 from emails.tasks import send_email_task
 from . forms import EmailForm
 from django.contrib import messages
@@ -27,9 +27,9 @@ def send_email(request):
                 attachment = email_form.attachment.path
             else:
                 attachment = None
-            
+            email_id = email_form.id
             ##handing email sending task to celery
-            send_email_task.delay(mail_subject, message, to_email, attachment)
+            send_email_task.delay(mail_subject, message, to_email, attachment, email_id)
             ## Display a success message
             messages.success(request,'Email Send Successfully')
             return redirect('send_email')
@@ -48,7 +48,7 @@ def track_open(request):
     return
 
 def track_dashboard(request):
-    emails = Email.objects.all()
+    emails = Email.objects.all().annotate(total_sent=Sum('sent__total_sent'))
     context ={
         'emails': emails,
     }
@@ -56,7 +56,9 @@ def track_dashboard(request):
 
 def track_stats(request, pk):
     email = get_object_or_404(Email, pk=pk)
+    sent= Sent.objects.get(email=email)
     context ={
         'email' : email,
+        'total_sent' : sent.total_sent,
     }
     return render(request, 'emails/track_stats.html', context)
