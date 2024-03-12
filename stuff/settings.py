@@ -166,5 +166,5 @@ ANYMAIL = {
     "SENDINBLUE_API_KEY": config('SENDINBLUE_API_KEY'),
     }
 
-CSRF_TRUSTED_ORIGINS = ['https://5dca-2601-143-4200-ba9-b01a-43e-91de-4e03.ngrok-free.app']
-BASE_URL = 'https://5dca-2601-143-4200-ba9-b01a-43e-91de-4e03.ngrok-free.app'
+CSRF_TRUSTED_ORIGINS = ['https://4598-2620-0-5301-2101-256d-2d37-9f88-a569.ngrok-free.app']
+BASE_URL = 'https://4598-2620-0-5301-2101-256d-2d37-9f88-a569.ngrok-free.app'

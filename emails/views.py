@@ -1,6 +1,8 @@
+from django.http import HttpResponse
+from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Sum
-from emails.models import Email, Sent, Subscriber
+from emails.models import Email, EmailTracking, Sent, Subscriber
 from emails.tasks import send_email_task
 from . forms import EmailForm
 from django.contrib import messages
@@ -41,11 +43,22 @@ def send_email(request):
         return render(request,'emails/send-email.html', context)
     
 
-def track_click(request):
+def track_click(request, unique_id):
+    print(request)
     return
 
-def track_open(request):
-    return
+def track_open(request, unique_id):
+    try:
+        email_tracking = EmailTracking.objects.get(unique_id=unique_id)
+        if not email_tracking.opened_at:
+            email_tracking.opened_at = timezone.now()
+            email_tracking.save()
+            return HttpResponse("Email Opened Successfully")
+        else:
+            print("Email Already Opened")
+            return HttpResponse("Emailed Already Opened")
+    except:
+        return HttpResponse("Email Tracking Record Not Found!")
 
 def track_dashboard(request):
     emails = Email.objects.all().annotate(total_sent=Sum('sent__total_sent'))
