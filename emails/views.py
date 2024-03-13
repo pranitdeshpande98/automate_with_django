@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Sum
@@ -44,8 +44,18 @@ def send_email(request):
     
 
 def track_click(request, unique_id):
-    print(request)
-    return
+    try:
+        email_tracking = EmailTracking.objects.get(unique_id=unique_id)
+        url = request.GET.get('url')
+        ## Check if clicked_at field is set or not
+        if not email_tracking.clicked_at:
+            email_tracking.clicked_at = timezone.now()
+            email_tracking.save()
+            return HttpResponseRedirect(url)
+        else:
+            return HttpResponseRedirect(url)
+    except:
+        return HttpResponse("Email Tracking Record Not Found!")
 
 def track_open(request, unique_id):
     try:
@@ -61,7 +71,7 @@ def track_open(request, unique_id):
         return HttpResponse("Email Tracking Record Not Found!")
 
 def track_dashboard(request):
-    emails = Email.objects.all().annotate(total_sent=Sum('sent__total_sent'))
+    emails = Email.objects.all().annotate(total_sent=Sum('sent__total_sent')).order_by('-sent_at')
     context ={
         'emails': emails,
     }
