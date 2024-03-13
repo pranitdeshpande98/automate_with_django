@@ -3,7 +3,11 @@
 
 {% block content %}
 {% load crispy_forms_tags %}
-
+<style>
+    .select2-container .select2-selection--single{
+        height: 40px !important
+    }
+</style>
 <div class="container mt-5 p-3 shadow rounded" style="max-width: 600px;">
     <h2 class="text-center"> Stock Market Analysis </h2>
     {% if messages %}
@@ -35,6 +39,6 @@ $(document).ready(function() {
     }, 5000);
 });
 </script>
-
+{{ form.media }}
 
 {% endblock %}
