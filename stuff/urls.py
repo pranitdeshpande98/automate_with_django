@@ -27,6 +27,7 @@ urlpatterns = [
     path('dataentry/',include('dataentry.urls')),
     path('emails/',include('emails.urls')),
     path('image-compression/',include('image_compression.urls')),
+    path('webscraping/',include('stockanalysis.urls')),
     path('celery_test',views.celery_test),
     ## Registration and Login URL
     path('register/',views.register,name='register'),
